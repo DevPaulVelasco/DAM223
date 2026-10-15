@@ -16,7 +16,9 @@ export default function App() {
       <Image source={require('./assets/wave.png')}></Image>
       <Saludo></Saludo>
       <Saludo2></Saludo2>
-      <Perfil></Perfil>
+      <Perfil nombre="Paul" carrera="TIID" materia="APPS MOVILES" cuatrimestre="4to Cuatrimestre"></Perfil>
+      <Perfil nombre="Miguel" carrera="TIID" materia="APPS MOVILES" cuatrimestre="4to Cuatrimestre"></Perfil>
+      <Perfil nombre="Iancarlo" carrera="TIID" materia="PROGRAMACIÓN" cuatrimestre="4to Cuatrimestre"></Perfil>
       <StatusBar style="auto" />
     </View>
   );
