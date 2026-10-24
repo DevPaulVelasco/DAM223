@@ -29,7 +29,7 @@ export default function MenuScreen() {
         case 'image': 
             return <ImageBackScreen />;
         case 'modal': 
-            return <ModalBottomScreen/>;
+            return <ModalScreen/>;
         case 'activity':
             return <ActivityIndicatorScreen/>;
         case 'menu':
