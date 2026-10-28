@@ -1,16 +1,19 @@
 // Zona de importaciones
-
-import { StyleSheet, View, Text } from 'react-native'; 
+import { SafeAreaView } from 'react-native-safe-area-context';
+import SafeAreaEjemplo from '../componentes/SafeAreaEjemplo';
+import ScrollViewEjemplo from '../componentes/ScrollViewEjemplo';
+import { StyleSheet, Text } from 'react-native';
 
 
 // Zona numero 2 "MAIN"
 export default function SafeScreen() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'right', 'bottom', 'left']}>
         <Text>Aqui va la practica 10</Text>
-        <Texto>Equipo Dulce</Texto>
-  
-    </View>
+        <Text>Equipo Dulce</Text>
+        <SafeAreaEjemplo />
+        <ScrollViewEjemplo />
+    </SafeAreaView>
   );
 }
 
@@ -19,9 +22,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#252525',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
 });
