@@ -26,4 +26,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 
+  textoBoton: {
+  color: 'black',
+  fontSie: 18,
+  fontWeight: 'bold',
+  },
+
 });
