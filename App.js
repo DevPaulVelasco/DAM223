@@ -2,7 +2,7 @@
 
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import MenuScreen from './screens/MenuScreen';
+import MenuScreen from './screens/MenuScreen'
 
 
 // Zona numero 2 "MAIN"
