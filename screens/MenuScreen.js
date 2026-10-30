@@ -1,4 +1,3 @@
-// Zona de importaciones
 import { StyleSheet, View, Text, Button } from 'react-native'; 
 import { useState } from 'react';
 import SafeScreen from './SafeScreen';
@@ -7,13 +6,12 @@ import ActivityIndicatorScreen from './ActivityIndicatorScreen';
 import FlatListScreen from './FlatListScreen';
 import ImageBackScreen  from './ImageBackScreen';
 import ModalScreen from './ModalBottomScreen';
+import TextInputScreen from './TextInputScreen'; 
 
-
-
-
-// Zona numero 2 "MAIN"
 export default function MenuScreen() {
     const [screen, setscreen] = useState('menu');
+
+    const regresarAlMenu = () => setscreen('menu');
 
     switch(screen) {
         case 'safe':
@@ -21,9 +19,14 @@ export default function MenuScreen() {
         case 'press':
             return <PressableScreen />;
         case 'tarjetas': 
-            return <TarjetasScreen />;
+            return <Text style={{color: '#fff'}}>Pantalla Tarjetas</Text>; 
         case 'text':
-            return <TextScreen />;
+            return (
+              <View style={{ flex: 1, width: '100%' }}>
+                
+                <TextInputScreen />
+              </View>
+            );
         case 'flat':
             return <FlatListScreen />;
         case 'image': 
@@ -36,7 +39,7 @@ export default function MenuScreen() {
         default:
             return (
                 <View style={styles.container}>
-                    <Text style={{ color: '#fff' }}>Menu de Practicas</Text>
+                    <Text style={styles.tituloMenu}>Menu de Practicas</Text>
                     
                     <Button title="Practica Tarjetas" onPress={() => setscreen('tarjetas')} />
                     
@@ -46,20 +49,19 @@ export default function MenuScreen() {
 
                     <Button title="Practica ActivityIndicator" onPress={() => setscreen('activity')}/>
                     
-                    <Button title="Practica FlatList" onPress={() => setscreen('flatList')} />
+                    <Button title="Practica FlatList" onPress={() => setscreen('flat')} />
                     
-                    <Button title="Practica ImageBack" onPress={() => setscreen('imageback')} />
+                    <Button title="Practica ImageBack" onPress={() => setscreen('image')} />
                     
                     <Button title="Practica Modal Bottom" onPress={() => setscreen('modal')} />
                     
-                    <Button title="Practica TextInput" onpPress={() => setscreen(text)}/>
+                    <Button title="Practica TextInput" onPress={() => setscreen('text')}/>
 
                 </View>
             );
     }
 } 
 
-// ZONA DE ESTILOS
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -67,5 +69,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column', 
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 10,
   },
+  tituloMenu: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 15,
+  }
 });
