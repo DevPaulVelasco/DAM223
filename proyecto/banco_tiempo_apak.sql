@@ -25,20 +25,20 @@ CREATE TABLE categoria (
 
 -- Almacena la información de perfil de los estudiantes y administradores
 CREATE TABLE usuario (
-    id_usuario            INT AUTO_INCREMENT PRIMARY KEY,
-    id_rol                INT NOT NULL,
-    nombre                VARCHAR(80) NOT NULL,
-    edad                  TINYINT UNSIGNED NOT NULL,
-    carrera               VARCHAR(100) NOT NULL,
-    correo                VARCHAR(100) NOT NULL UNIQUE,
-    password_hash         VARCHAR(255) NOT NULL,
-    descripcion_sobre_mi  TEXT NULL,
-    credito               TINYINT NOT NULL DEFAULT 1 CHECK (credito BETWEEN 0 AND 1),
-    fecha_registro        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    id_usuario             INT AUTO_INCREMENT PRIMARY KEY,
+    id_rol                 INT NOT NULL,
+    nombre                 VARCHAR(80) NOT NULL,
+    edad                   TINYINT UNSIGNED NOT NULL,
+    carrera                VARCHAR(100) NOT NULL,
+    correo                 VARCHAR(100) NOT NULL UNIQUE,
+    password_hash          VARCHAR(255) NOT NULL,
+    descripcion_sobre_mi   TEXT NULL,
+    credito                TINYINT NOT NULL DEFAULT 1 CHECK (credito BETWEEN 0 AND 1),
+    fecha_registro         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_rol) REFERENCES rol(id_rol)
 );
 
--- Opcional: Solicitudes de recuperación de contraseña con token seguro hasheado
+-- Solicitudes de recuperación de contraseña con token seguro hasheado
 CREATE TABLE recuperacion_contrasena (
     id_recuperacion INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario      INT NOT NULL,
@@ -94,12 +94,12 @@ CREATE TABLE favorito (
 
 -- Solicitudes de intercambio 1 a 1 entre usuario solicitante y servicios implicados
 CREATE TABLE solicitud (
-    id_solicitud           INT AUTO_INCREMENT PRIMARY KEY,
+    id_solicitud             INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario_solicitante INT NOT NULL,
     id_servicio_deseado    INT NOT NULL,
     id_servicio_ofrecido   INT NOT NULL,
-    estado                 ENUM('Pendiente', 'Aceptada', 'Rechazada', 'Cancelada') NOT NULL DEFAULT 'Pendiente',
-    fecha_creacion         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    estado                   ENUM('Pendiente', 'Aceptada', 'Rechazada', 'Cancelada') NOT NULL DEFAULT 'Pendiente',
+    fecha_creacion           DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_usuario_solicitante) REFERENCES usuario(id_usuario),
     FOREIGN KEY (id_servicio_deseado)    REFERENCES servicio(id_servicio),
     FOREIGN KEY (id_servicio_ofrecido)   REFERENCES servicio(id_servicio)
@@ -130,13 +130,13 @@ CREATE TABLE movimiento_credito (
 
 -- Calificaciones y reseñas asociadas a un intercambio completado
 CREATE TABLE resena (
-    id_resena           INT AUTO_INCREMENT PRIMARY KEY,
-    id_intercambio      INT NOT NULL,
-    id_usuario_autor    INT NOT NULL,
+    id_resena             INT AUTO_INCREMENT PRIMARY KEY,
+    id_intercambio        INT NOT NULL,
+    id_usuario_autor      INT NOT NULL,
     id_usuario_receptor INT NOT NULL,
-    puntuacion          TINYINT NOT NULL CHECK (puntuacion BETWEEN 1 AND 5),
-    comentario          TEXT NULL,
-    fecha               DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    puntuacion            TINYINT NOT NULL CHECK (puntuacion BETWEEN 1 AND 5),
+    comentario            TEXT NULL,
+    fecha                 DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (id_intercambio, id_usuario_autor),
     FOREIGN KEY (id_intercambio)      REFERENCES intercambio(id_intercambio),
     FOREIGN KEY (id_usuario_autor)    REFERENCES usuario(id_usuario),
@@ -158,6 +158,9 @@ CREATE TABLE reporte (
     FOREIGN KEY (id_usuario_admin)   REFERENCES usuario(id_usuario)
 );
 
+-- ==========================================
+-- INSERTS A TODAS LAS TABLAS
+-- ==========================================
 INSERT INTO rol (nombre, descripcion) VALUES
 ('Administrador', 'Control total de la plataforma y gestión de reportes'),
 ('Estudiante', 'Usuario común que ofrece y solicita servicios de tiempo');
@@ -177,6 +180,9 @@ INSERT INTO usuario (id_rol, nombre, edad, carrera, correo, password_hash, descr
 (2, 'Carlos Gómez', 20, 'Licenciatura en Lenguas', 'carlos.gomez@apak.edu', '$2y$10$fictitioushashuserone12345678', 'Apasionado por los idiomas y la cultura.', 1),
 (2, 'Lucía Fernández', 22, 'Ciencias de la Computación', 'lucia.fernandez@apak.edu', '$2y$10$fictitioushashusertwo12345678', 'Me encanta programar y enseñar.', 1);
 
+INSERT INTO recuperacion_contrasena (id_usuario, token_hash, vencimiento) VALUES
+(2, 'hash_token_ejemplo_abc123', '2026-06-12 23:59:59');
+
 INSERT INTO usuario_habilidad (id_usuario, id_habilidad, id_nivel) VALUES
 (2, 1, 3),
 (3, 2, 2);
@@ -188,36 +194,77 @@ INSERT INTO servicio (id_usuario, id_categoria, titulo, descripcion, fecha_dispo
 INSERT INTO favorito (id_usuario, id_servicio) VALUES (2, 2);
 
 INSERT INTO solicitud (id_usuario_solicitante, id_servicio_deseado, id_servicio_ofrecido, estado) VALUES
-(2, 2, 1, 'Pendiente');
+(2, 2, 1, 'Aceptada');
 
+INSERT INTO intercambio (id_solicitud, estado, fecha_inicio, fecha_fin) VALUES
+(1, 'Completado', '2026-06-10 16:00:00', '2026-06-10 17:00:00');
+
+INSERT INTO movimiento_credito (id_usuario, id_intercambio, tipo, cantidad, estado) VALUES
+(2, 1, 'Salida', 1, 'Completado'),
+(3, 1, 'Entrada', 1, 'Completado');
+
+INSERT INTO resena (id_intercambio, id_usuario_autor, id_usuario_receptor, puntuacion, comentario) VALUES
+(1, 2, 3, 5, 'Excelente explicación, muy paciente y clara.');
+
+INSERT INTO reporte (id_servicio, id_usuario_reporta, id_usuario_admin, descripcion, estado) VALUES
+(1, 3, 1, 'El título tiene una pequeña errata que requiere revisión.', 'Revisado');
+
+
+-- ==========================================
+-- 3 CONSULTAS SIMPLES
+-- ==========================================
 SELECT * FROM categoria;
+
 SELECT * FROM servicio WHERE estado = 'Activo';
 
-SELECT u.nombre, u.edad, u.carrera, u.descripcion_sobre_mi, u.credito 
-FROM usuario u WHERE u.id_usuario = 2;
+SELECT u.nombre, u.edad, u.carrera, u.credito FROM usuario u WHERE u.id_usuario = 2;
 
+
+-- ==========================================
+-- 3 CONSULTAS CON INNER JOIN
+-- ==========================================
+-- Consulta 1: Habilidades del usuario
 SELECT h.nombre AS habilidad, nh.nombre AS nivel 
 FROM usuario_habilidad uh
 JOIN habilidad h ON h.id_habilidad = uh.id_habilidad
 JOIN nivel_habilidad nh ON nh.id_nivel = uh.id_nivel
 WHERE uh.id_usuario = 2;
 
-SELECT s.id_servicio, s.titulo, s.descripcion, s.fecha_disponibilidad, s.hora_disponibilidad, 
+-- Consulta 2: Servicios activos con categoría y proveedor
+SELECT s.id_servicio, s.titulo, s.descripcion, s.fecha_disponibilidad, 
        c.nombre AS categoria, u.nombre AS proveedor
 FROM servicio s
 JOIN categoria c ON c.id_categoria = s.id_categoria
 JOIN usuario u ON u.id_usuario = s.id_usuario
 WHERE s.estado = 'Activo';
 
-SELECT id_solicitud, estado, fecha_creacion FROM solicitud WHERE id_usuario_solicitante = 2;
-
+-- Consulta 3: Intercambios completados asociados a solicitudes
 SELECT i.id_intercambio, i.estado, i.fecha_inicio
 FROM intercambio i
 JOIN solicitud s ON s.id_solicitud = i.id_solicitud
-WHERE s.id_usuario_solicitante = 2 AND i.estado = 'Completado';
+WHERE i.estado = 'Completado';
 
-SELECT 
-    (SELECT COUNT(*) FROM usuario) AS total_usuarios,
-    (SELECT COUNT(*) FROM servicio WHERE estado = 'Activo') AS servicios_activos,
-    (SELECT COUNT(*) FROM solicitud WHERE estado = 'Pendiente') AS solicitudes_pendientes,
-    (SELECT COUNT(*) FROM intercambio WHERE estado = 'Completado') AS intercambios_completados;
+
+-- ==========================================
+-- 2 PROCEDIMIENTOS ALMACENADOS
+-- ==========================================
+DELIMITER //
+
+-- Procedimiento 1: Obtiene información resumida de un usuario por su ID
+CREATE PROCEDURE sp_obtener_info_usuario (IN p_id_usuario INT)
+BEGIN
+    SELECT u.nombre, u.edad, u.carrera, u.correo, u.credito, r.nombre AS rol
+    FROM usuario u
+    JOIN rol r ON u.id_rol = r.id_rol
+    WHERE u.id_usuario = p_id_usuario;
+END //
+
+-- Procedimiento 2: Cambiar el estado de un servicio a Suspendido o Activo
+CREATE PROCEDURE sp_actualizar_estado_servicio (IN p_id_servicio INT, IN p_nuevo_estado ENUM('Activo', 'Suspendido'))
+BEGIN
+    UPDATE servicio 
+    SET estado = p_nuevo_estado 
+    WHERE id_servicio = p_id_servicio;
+END //
+
+DELIMITER ;
