@@ -7,19 +7,13 @@ export const CajaTexto = ({ etiqueta, texto, style }) => (
   </View>
 );
 const s = StyleSheet.create({
-  caja: { borderWidth: 1, 
-    borderColor: '#999', 
-    backgroundColor: '#fff', 
-    padding: 10, 
-    marginVertical: 10 },
+  caja: { borderWidth: 1, borderColor: '#E4EAF2', borderRadius: 14, backgroundColor: '#fff', padding: 14, marginVertical: 10 },
   etiqueta: { alignSelf: 'flex-start', 
-    backgroundColor: colores.gris, 
+    backgroundColor: 'transparent',
     color: colores.marino, 
     fontSize: 10,
-     fontWeight: 'bold', 
-     paddingHorizontal: 5,
-      marginBottom: 6 },
-  texto: { fontSize: 13, 
-    letterSpacing: 1, 
-    color: colores.texto },
+     fontWeight: '700',
+     paddingHorizontal: 0,
+      marginBottom: 8 },
+  texto: { fontSize: 14, lineHeight: 21, color: colores.texto },
 });

@@ -12,12 +12,12 @@ export const Accion = ({ icono, texto, style }) => (
   </View>
 );
 
-export const EditarEliminar = ({ style }) => (
+export const EditarEliminar = ({ style, onEditar, onEliminar }) => (
   <View style={[{ flexDirection: 'row', 
   alignSelf: 'flex-end',
    marginTop: 6 }, 
    style]}>
-    <Accion icono="lapiz" texto="Editar" />
-    <Accion icono="basura" texto="Eliminar" style={{ marginLeft: 18 }} />
+    <Accion icono="lapiz" texto="Editar" onPress={onEditar} />
+    <Accion icono="basura" texto="Eliminar" onPress={onEliminar} style={{ marginLeft: 18 }} />
   </View>
 );

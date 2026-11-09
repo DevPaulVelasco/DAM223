@@ -26,4 +26,5 @@ export { default as EditarUsuarioScreen } from './EditarUsuarioScreen';
 export { default as IntercambiosScreen } from './IntercambiosScreen';
 export { default as CreditosScreen } from './CreditosScreen';
 export { default as ReportesScreen } from './ReportesScreen';
+export { default as CrearReporteScreen } from './CrearReporteScreen';
 export { default as CalificacionesScreen } from './CalificacionesScreen';

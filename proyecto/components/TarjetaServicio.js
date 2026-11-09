@@ -1,15 +1,23 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { colores } from './tema';
-export const TarjetaServicio = ({ fecha, titulo, creditos = 2, style }) => (
-  <View style={[s.tarjeta, style]}>
-    <Text style={s.fecha}>{fecha} <Text style={{ color: colores.amarillo }}>●</Text></Text>
-    <Text style={s.titulo}>{titulo}</Text>
-    <Text style={s.creditos}>{creditos} creditos</Text>
-  </View>
-);
+export const TarjetaServicio = ({ fecha, titulo, creditos = 2, style, onPress }) => {
+  const contenido = (
+    <>
+      <Text style={s.fecha}>{fecha} <Text style={{ color: colores.amarillo }}>●</Text></Text>
+      <Text style={s.titulo}>{titulo}</Text>
+      <Text style={s.creditos}>{creditos} {creditos === 1 ? 'credito' : 'creditos'}</Text>
+    </>
+  );
+
+  return onPress ? (
+    <Pressable onPress={onPress} accessibilityRole="button" style={[s.tarjeta, style]}>{contenido}</Pressable>
+  ) : (
+    <View style={[s.tarjeta, style]}>{contenido}</View>
+  );
+};
 const s = StyleSheet.create({
-  tarjeta: { backgroundColor: colores.azul, padding: 12, marginVertical: 8 },
-  fecha: { fontSize: 11, color: colores.marino, fontWeight: 'bold', letterSpacing: 1 },
-  titulo: { fontSize: 14, color: colores.marino, fontWeight: 'bold', letterSpacing: 1, marginTop: 4 },
-  creditos: { fontSize: 11, color: colores.marino, alignSelf: 'flex-end', letterSpacing: 1 },
+  tarjeta: { backgroundColor: colores.blanco, borderWidth: 1, borderColor: '#E5EBF3', borderRadius: 16, padding: 16, marginVertical: 7, elevation: 1, shadowColor: '#243B63', shadowOpacity: 0.05, shadowRadius: 5, shadowOffset: { width: 0, height: 2 } },
+  fecha: { fontSize: 12, color: '#75839A', fontWeight: '600' },
+  titulo: { fontSize: 16, color: colores.marino, fontWeight: '700', marginTop: 7 },
+  creditos: { fontSize: 12, color: colores.boton, fontWeight: '700', alignSelf: 'flex-end', marginTop: 8 },
 });

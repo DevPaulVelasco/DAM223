@@ -1,29 +1,60 @@
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { PantallaBase, Moneda, Boton, colores } from '../components';
-const datos = [
-  ['08 Oct 2026', 'Introduccion a HTML', 'JOHN DUE ⇄ PEDRO LOPEZ', 2, 'PENDIENTE', colores.amarillo],
-  ['09 Oct 2026', 'Curso de PYTHON', 'JOHN DUE ⇄ JUAN PEREZ', 2, 'COMPLETADO', colores.verde],
-];
+import { useNavigation } from '../navigation';
+import { confirmarAccion, mostrarError, useAppData } from '../appData';
+
 export default function IntercambiosScreen() {
+  const { navegar } = useNavigation();
+  const { datos, completarIntercambio, cancelarIntercambio } = useAppData();
+  const intercambios = datos.exchanges.filter((exchange) =>
+    exchange.requesterId === datos.currentUserId || exchange.providerId === datos.currentUserId);
+
+  const completar = async (id) => {
+    try {
+      await completarIntercambio(id);
+      navegar('CalificarScreen', { exchangeId: id });
+    } catch (error) {
+      mostrarError(error);
+    }
+  };
+
+  const cancelar = (id) => confirmarAccion('Cancelar intercambio', 'El credito reservado sera devuelto al solicitante.', async () => {
+      try {
+        await cancelarIntercambio(id);
+      } catch (error) {
+        mostrarError(error);
+      }
+    }, 'Cancelar intercambio');
+
   return (
     <PantallaBase titulo="Intercambios">
-      {datos.map(([f, t, quien, c, estado, color]) => (
-        <View key={t} style={{ backgroundColor: colores.azul, padding: 10, marginBottom: 16 }}>
-          <Text style={{ fontSize: 11, fontWeight: 'bold', color: colores.marino, letterSpacing: 1 }}>{f} <Text style={{ color }}>● </Text>{estado}</Text>
-          <Text style={{ fontSize: 14, fontWeight: 'bold', color: colores.marino, letterSpacing: 1, marginTop: 4 }}>{t}</Text>
-          <Text style={{ fontSize: 11, color: '#fff', fontWeight: 'bold', letterSpacing: 1, marginTop: 4 }}>{quien}</Text>
-          <View style={{ alignSelf: 'flex-end' }}><Moneda valor={c} tam={14} /></View>
-          {estado === 'PENDIENTE' && (
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Boton titulo="Confirmar" color={colores.verde} pill={false} style={{ paddingHorizontal: 14 }} />
-              <Boton titulo="Cancelar" color={colores.rojo} pill={false} style={{ paddingHorizontal: 14 }} />
-            </View>
-          )}
-        </View>
-      ))}
-      <Text style={{ color: colores.boton, fontSize: 12, fontWeight: 'bold', textAlign: 'center' }}>
-        Aqui iran apareciendo tus intercambios :D
-      </Text>
+      {intercambios.map((exchange) => {
+        const service = datos.services.find((item) => item.id === exchange.serviceId);
+        const otherUserId = exchange.requesterId === datos.currentUserId ? exchange.providerId : exchange.requesterId;
+        const otherUser = datos.users.find((user) => user.id === otherUserId);
+        const calificacion = datos.reviews.find((review) => review.exchangeId === exchange.id && review.reviewerId === datos.currentUserId);
+        const estado = exchange.status === 'accepted' ? 'PENDIENTE' : exchange.status === 'completed' ? 'COMPLETADO' : 'CANCELADO';
+
+        return (
+          <View key={exchange.id} style={{ backgroundColor: colores.blanco, borderWidth: 1, borderColor: '#E5EBF3', borderRadius: 16, padding: 16, marginBottom: 12 }}>
+            <Text style={{ fontSize: 12, fontWeight: '700', color: exchange.status === 'accepted' ? colores.amarillo : colores.verde }}>{estado}</Text>
+            <Text style={{ fontSize: 16, fontWeight: '700', color: colores.marino, marginTop: 8 }}>{service?.title || 'Servicio eliminado'}</Text>
+            <Text style={{ fontSize: 12, color: '#75839A', marginTop: 6 }}>{exchange.status === 'accepted' ? 'Con' : 'Intercambio con'} {otherUser?.name || 'Usuario'} · En linea · 1 a 1</Text>
+            <View style={{ alignSelf: 'flex-end', marginTop: 8 }}><Moneda valor="1" tam={14} /></View>
+            {exchange.status === 'accepted' && (
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Boton titulo="Completar" color={colores.verde} pill={false} onPress={() => completar(exchange.id)} />
+                <Boton titulo="Cancelar" color={colores.rojo} pill={false} onPress={() => cancelar(exchange.id)} />
+              </View>
+            )}
+            {exchange.status === 'completed' && !calificacion && (
+              <Boton titulo="Calificar intercambio" color={colores.boton} pill={false} onPress={() => navegar('CalificarScreen', { exchangeId: exchange.id })} />
+            )}
+            {calificacion && <Text style={{ color: colores.marino, marginTop: 6 }}>Tu calificacion: {calificacion.rating}/5</Text>}
+          </View>
+        );
+      })}
+      {intercambios.length === 0 && <Text style={{ color: '#75839A', textAlign: 'center', marginTop: 20 }}>Aun no tienes intercambios. Cuando acepten una solicitud, aparecera aqui.</Text>}
     </PantallaBase>
   );
 }

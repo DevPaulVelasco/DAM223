@@ -1,15 +1,11 @@
-import { Pressable, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { colores } from './tema';
-export const Boton = ({ titulo, color = colores.boton, textoColor = '#fff', pill = true, style, onPress }) => (
-  <Pressable onPress={onPress} style={({ pressed }) => [s.b, { backgroundColor: color, borderRadius: pill ? 20 : 4, opacity: pressed ? 0.8 : 1 }, style]}>
+export const Boton = ({ titulo, color = colores.boton, textoColor = '#fff', pill = true, style }) => (
+  <View style={[s.b, { backgroundColor: color, borderRadius: pill ? 14 : 10 }, style]}>
     <Text style={[s.t, { color: textoColor }]}>{titulo}</Text>
-  </Pressable>
+  </View>
 );
 const s = StyleSheet.create({
-  b: { paddingVertical: 10, 
-    paddingHorizontal: 30, 
-    alignSelf: 'center', 
-    marginVertical: 8 },
-  t: { fontWeight: 'bold', 
-    fontSize: 13 },
+  b: { minHeight: 48, paddingVertical: 13, paddingHorizontal: 24, alignSelf: 'center', justifyContent: 'center', marginVertical: 8, elevation: 2, shadowColor: '#243B63', shadowOpacity: 0.12, shadowRadius: 5, shadowOffset: { width: 0, height: 2 } },
+  t: { fontWeight: '700', fontSize: 14, textAlign: 'center', letterSpacing: 0.2 },
 });

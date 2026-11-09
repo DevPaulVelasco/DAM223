@@ -10,5 +10,5 @@ export const grupos = [
   ['Servicios', [['Mis servicios', 'ServiciosScreen'], ['Proveer servicio', 'DarServicioScreen'], ['Usar servicio', 'UsarServicioScreen']]],
   ['Solicitudes, intercambios y creditos', [['Solicitudes', 'SolicitudesScreen'], ['Intercambios', 'IntercambiosScreen'], ['Creditos', 'CreditosScreen']]],
   ['Calificaciones y favoritos', [['Calificar', 'CalificarScreen'], ['Calificaciones', 'CalificacionesScreen'], ['Favoritos', 'FavoritosScreen'], ['Reseñas', 'ResenasScreen']]],
-  ['Reportes', [['Reportes', 'ReportesScreen']]],
+  ['Reportes', [['Reportes', 'ReportesScreen'], ['Crear reporte', 'CrearReporteScreen']]],
 ];

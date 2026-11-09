@@ -11,14 +11,12 @@ export const Dato = ({ etiqueta, valor, grande, style }) => (
 );
 const s = StyleSheet.create({
   etiqueta: { alignSelf: 'flex-start',
-     backgroundColor: colores.gris,
-      color: colores.marino,
+     backgroundColor: 'transparent',
+      color: '#748198',
        fontSize: 10,
-        fontWeight: 'bold', 
-        paddingHorizontal: 5,
-         paddingVertical: 1, 
-         letterSpacing: 1 },
-  valor: { fontSize: 15, 
-    fontWeight: '900',
-     marginTop: 3 },
+        fontWeight: '700',
+        paddingHorizontal: 0,
+         paddingVertical: 2,
+         letterSpacing: 0.6 },
+  valor: { fontSize: 15, fontWeight: '700', color: colores.texto, marginTop: 3 },
 });

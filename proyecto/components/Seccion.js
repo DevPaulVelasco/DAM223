@@ -9,16 +9,8 @@ export const Seccion = ({ titulo, icono }) => (
   </View>
 );
 const s = StyleSheet.create({
-  barra: { backgroundColor: colores.gris, 
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    
-    alignItems: 'center', 
-    paddingHorizontal: 8, 
-    paddingVertical: 4, 
-    marginTop: 22, 
-    marginBottom: 12 },
+  barra: { backgroundColor: 'transparent', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 2, paddingVertical: 4, marginTop: 22, marginBottom: 10 },
   texto: { color: colores.marino,
-     fontWeight: '900', 
-     fontSize: 15 },
+     fontWeight: '800',
+     fontSize: 16 },
 });

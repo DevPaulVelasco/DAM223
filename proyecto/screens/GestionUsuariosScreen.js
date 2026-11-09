@@ -1,20 +1,21 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { PantallaBase, Avatar, colores, Icono } from '../components';
+import { Pressable, Text } from 'react-native';
+import { PantallaBase, Avatar, colores } from '../components';
+import { useNavigation } from '../navigation';
+import { useAppData } from '../appData';
+
 export default function GestionUsuariosScreen() {
+  const { navegar } = useNavigation();
+  const { datos } = useAppData();
+
   return (
     <PantallaBase titulo="Gestion de usuarios">
-      {[1, 2, 3, 4].map((n) => (
-        <View key={n} style={s.fila}>
-          <Text style={s.nombre}>USUARIO {n}</Text>
-          <Avatar ancho={40} alto={40} />
-          <Icono nombre="lapiz" tam={26} style={s.lapiz} />
-        </View>
+      {datos.users.map((user) => (
+        <Pressable key={user.id} style={{ backgroundColor: colores.blanco, borderWidth: 1, borderColor: '#E5EBF3', borderRadius: 14, flexDirection: 'row', alignItems: 'center', padding: 14, marginBottom: 10 }} onPress={() => navegar('GestionUsuarioScreen', { userId: user.id })}>
+          <Avatar ancho={44} alto={44} />
+          <Text style={{ color: colores.marino, fontSize: 15, fontWeight: '700', marginLeft: 12, flex: 1 }}>{user.name}</Text>
+          <Text style={{ color: '#75839A', fontSize: 12 }}>{user.credits} creditos ›</Text>
+        </Pressable>
       ))}
     </PantallaBase>
   );
 }
-const s = StyleSheet.create({
-  fila: { backgroundColor: colores.azul, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 12, marginBottom: 22 },
-  nombre: { color: '#fff', fontSize: 18, fontWeight: '900', letterSpacing: 2 },
-  lapiz: { position: 'absolute', right: -6, top: -14 },
-});

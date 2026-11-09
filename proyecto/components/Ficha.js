@@ -9,6 +9,6 @@ export const Ficha = ({ texto, icono, grande }) => (
   </View>
 );
 const s = StyleSheet.create({
-  ficha: { width: 72, height: 64, backgroundColor: colores.azul, alignItems: 'center', justifyContent: 'center', marginHorizontal: 6 },
-  texto: { color: '#fff', fontWeight: 'bold', fontSize: 11, letterSpacing: 1 },
+  ficha: { width: 76, height: 72, backgroundColor: colores.blanco, borderRadius: 16, alignItems: 'center', justifyContent: 'center', marginHorizontal: 6, elevation: 1, shadowColor: '#243B63', shadowOpacity: 0.06, shadowRadius: 5, shadowOffset: { width: 0, height: 2 } },
+  texto: { color: colores.marino, fontWeight: '700', fontSize: 11, letterSpacing: 0.4 },
 });
